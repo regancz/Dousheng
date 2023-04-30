@@ -1,0 +1,37 @@
+zuul:
+  routes:
+    webapp:
+      path: /webapp/**
+      serviceId: web-app
+    auth:
+      path: /auth/**
+      serviceId: auth
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+kafka:
+  host: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
+
+logging:
+  level:
+    org.springframework.security.oauth2: debug
+    com.alibaba.nacos: error
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss SSS} [%X{PtxId}] [%thread] %-5level %logger{50} - %msg%n"
+
+spring:
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
