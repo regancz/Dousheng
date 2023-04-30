@@ -14,4 +14,11 @@
       </profile>
     </annotationProcessing>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="dousheng-common" options="-parameters" />
+      <module name="dousheng-gateway" options="-parameters" />
+      <module name="dousheng-video" options="-parameters" />
+    </option>
+  </component>
 </project>
