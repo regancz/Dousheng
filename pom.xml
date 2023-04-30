@@ -8,12 +8,14 @@
     <artifactId>Dousheng</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
         <module>dousheng-gateway</module>
         <module>dousheng-auth</module>
         <module>dousheng-video</module>
         <module>dousheng-common</module>
         <module>dousheng-admin</module>
+        <module>dousheng-mbg</module>
     </modules>
 
     <parent>
