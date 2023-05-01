@@ -33,7 +33,7 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public MinioUploadDto upload(MultipartFile file) {
         try {
-            //创建一个MinIO的Java客户端
+            // 创建一个MinIO的Java客户端
             MinioClient minioClient =MinioClient.builder()
                     .endpoint(ENDPOINT)
                     .credentials(ACCESS_KEY,SECRET_KEY)
@@ -42,7 +42,7 @@ public class MinioServiceImpl implements MinioService {
             if (isExist) {
                 LOGGER.info("存储桶已经存在！");
             } else {
-                //创建存储桶并设置只读权限
+                // 创建存储桶并设置只读权限
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(BUCKET_NAME).build());
                 BucketPolicyConfigDto bucketPolicyConfigDto = createBucketPolicyConfigDto(BUCKET_NAME);
                 SetBucketPolicyArgs setBucketPolicyArgs = SetBucketPolicyArgs.builder()

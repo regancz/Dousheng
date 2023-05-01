@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
 
 /**
  * @author charles
@@ -38,7 +37,12 @@ public class VideoController {
     @RequestMapping(value = "/publish/action", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult publishVideo(PublishVideoParam publishVideoParam) {
-        int count = videoService.publishVideo(publishVideoParam);
+        int count = 0;
+        try {
+            count = videoService.publishVideo(publishVideoParam);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         if (count <= 0)
             return CommonResult.failed();
         return CommonResult.success();

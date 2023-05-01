@@ -17,17 +17,6 @@ public class AuthInterceptor implements AsyncHandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getParameter("token");
-        if (StpUtil.isLogin()) {
-            List<Long> dataScopes = ExtraUtil.getDataScopes();
-            if (!CollectionUtils.isEmpty(dataScopes)) {
-                AppContextHolder.set(AuthConstant.Extra.DATA_SCOPES, dataScopes);
-            }
-        }
         return true;
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        AppContextHolder.clear();
     }
 }

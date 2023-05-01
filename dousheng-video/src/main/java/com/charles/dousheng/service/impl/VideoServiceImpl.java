@@ -44,19 +44,29 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public int publishVideo(PublishVideoParam publishVideoParam) throws Exception {
-        File file = publishVideoParam.getData();
-        FileInputStream input = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile("test.txt", file.getName(), "text/plain", IOUtils.toByteArray(input));
-        MinioUploadDto minioUploadVideoDto = minioService.upload(multipartFile);
-        BufferedImage bufferedImage = ExecuteFrame(file);
-        assert bufferedImage != null;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        MultipartFile mockMultipartFile = new MockMultipartFile("pic1.jpg", out.toByteArray());
-        MinioUploadDto minioUploadCoverDto = minioService.upload(mockMultipartFile);
-        Video video = new Video(IdUtil.fastSimpleUUID(), publishVideoParam.getTitle(), , new Date(),
-                minioUploadVideoDto.getUrl(), minioUploadCoverDto.getUrl(), 0, 0);
-        return videoMapper.insert(video);
+    public int publishVideo(PublishVideoParam publishVideoParam) {
+        try {
+            File file = publishVideoParam.getData();
+            FileInputStream input = new FileInputStream(file);
+            MultipartFile multipartFile = new MockMultipartFile(
+                    publishVideoParam.getToken() + "-" + publishVideoParam.getTitle() + "-video.mp4", file.getName(),
+                    "text/plain", IOUtils.toByteArray(input));
+            MinioUploadDto minioUploadVideoDto = minioService.upload(multipartFile);
+            BufferedImage bufferedImage = ExecuteFrame(file);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            assert bufferedImage != null;
+            ImageIO.write(bufferedImage, "jpg", out);
+            MultipartFile mockMultipartFile = new MockMultipartFile(
+                    publishVideoParam.getToken() + "-" + publishVideoParam.getTitle() + "-cover.jpg", out.toByteArray());
+            MinioUploadDto minioUploadCoverDto = minioService.upload(mockMultipartFile);
+            Video video = new Video(IdUtil.fastSimpleUUID(), publishVideoParam.getTitle(), , new Date(),
+                    minioUploadVideoDto.getUrl(), minioUploadCoverDto.getUrl(), 0, 0);
+            return videoMapper.insert(video);
+        } catch (Exception e) {
+            LOGGER.info("{}, {} publishVideo ERROR", publishVideoParam.getToken(), publishVideoParam.getTitle());
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
@@ -71,6 +81,7 @@ public class VideoServiceImpl implements VideoService {
             grabber.setFrameNumber(1);
             Java2DFrameConverter converter = new Java2DFrameConverter();
             BufferedImage image = converter.convert(grabber.grab());
+            converter.close();
             grabber.stop();
             return image;
         } catch (Exception e) {
