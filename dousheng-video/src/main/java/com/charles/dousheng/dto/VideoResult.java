@@ -21,7 +21,7 @@ public class VideoResult {
     /**
      * 视频封面地址
      */
-    private String coverurl;
+    private String coverUrl;
     /**
      * 视频的点赞总数
      */
@@ -37,7 +37,7 @@ public class VideoResult {
     /**
      * 视频播放地址
      */
-    private String playurl;
+    private String playUrl;
     /**
      * 视频标题
      */

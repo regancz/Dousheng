@@ -14,5 +14,5 @@ public class UserParam {
     @ApiModelProperty("用户鉴权token")
     private String token;
     @ApiModelProperty("用户id")
-    private String user_id;
+    private Long user_id;
 }

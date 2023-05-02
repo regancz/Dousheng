@@ -18,7 +18,7 @@ public class CommonResult<T> {
         this.data = data;
     }
 
-    protected CommonResult(long code, String message) {
+    public CommonResult(long code, String message) {
         this.status_code = code;
         this.status_msg = message;
     }

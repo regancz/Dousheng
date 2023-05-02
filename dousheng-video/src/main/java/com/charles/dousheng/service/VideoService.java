@@ -3,6 +3,7 @@ package com.charles.dousheng.service;
 import com.charles.dousheng.dto.*;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 /**
  * @author charles
@@ -13,5 +14,5 @@ public interface VideoService {
 
     int publishVideo(PublishVideoParam publishVideoParam) throws FileNotFoundException, Exception;
 
-    VideoResult publishedVideoList(UserParam userParam);
+    List<VideoResult> publishedVideoList(UserParam userParam);
 }

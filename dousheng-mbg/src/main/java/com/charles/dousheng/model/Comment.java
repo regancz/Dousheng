@@ -9,10 +9,10 @@ public class Comment implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "评论用户")
-    private String userId;
+    private Long userId;
 
     @ApiModelProperty(value = "视频id")
-    private String videoId;
+    private Long videoId;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
@@ -33,19 +33,19 @@ public class Comment implements Serializable {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public String getVideoId() {
+    public Long getVideoId() {
         return videoId;
     }
 
-    public void setVideoId(String videoId) {
+    public void setVideoId(Long videoId) {
         this.videoId = videoId;
     }
 

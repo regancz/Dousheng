@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 
 /**
  * @author charles
@@ -28,9 +30,10 @@ public class VideoController {
     @ApiOperation("按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个")
     @RequestMapping(value = "/feed", method = RequestMethod.GET)
     @ResponseBody
-    public FeedResult feed(@RequestBody FeedParam feedParam) {
+    public CommonResult<FeedResult> feed(@RequestBody FeedParam feedParam) {
         FeedInfo feedInfo = videoService.feed(feedParam);
-        return new FeedResult(feedInfo.getNextTime(), ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), feedInfo.getVideoList());
+        FeedResult feedResult = new FeedResult(feedInfo.getNextTime(), feedInfo.getVideoList());
+        return CommonResult.success(feedResult);
     }
 
     @ApiOperation("登录用户选择视频上传")
@@ -51,8 +54,8 @@ public class VideoController {
     @ApiOperation("用户的视频发布列表，直接列出用户所有投稿过的视频")
     @RequestMapping(value = "/publish/list", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<VideoResult> publishedVideoList(@RequestBody UserParam userParam) {
-        VideoResult videoResult = videoService.publishedVideoList(userParam);
-        return CommonResult.success(videoResult);
+    public CommonResult<List<VideoResult>> publishedVideoList(@RequestBody UserParam userParam) {
+        List<VideoResult> videoResults = videoService.publishedVideoList(userParam);
+        return CommonResult.success(videoResults);
     }
 }

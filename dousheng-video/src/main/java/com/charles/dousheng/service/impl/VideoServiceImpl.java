@@ -1,14 +1,18 @@
 package com.charles.dousheng.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import com.charles.dousheng.crypto.JwtProcessor;
 import com.charles.dousheng.dto.*;
+import com.charles.dousheng.id.IdProcessor;
+import com.charles.dousheng.mapper.FollowMapper;
+import com.charles.dousheng.mapper.UserMapper;
+import com.charles.dousheng.mapper.UserVideoMapper;
 import com.charles.dousheng.mapper.VideoMapper;
-import com.charles.dousheng.model.Video;
+import com.charles.dousheng.model.*;
 import com.charles.dousheng.service.MinioService;
 import com.charles.dousheng.service.VideoService;
 import org.apache.commons.compress.utils.IOUtils;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
-import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +26,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author charles
@@ -36,15 +41,73 @@ public class VideoServiceImpl implements VideoService {
     private VideoMapper videoMapper;
 
     @Autowired
+    private UserVideoMapper userVideoMapper;
+
+    @Autowired
+    private FollowMapper followMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private MinioService minioService;
 
     @Override
     public FeedInfo feed(FeedParam feedParam) {
+        // 解析jwt
+        Object userId = JwtProcessor.parseJwt(feedParam.getToken());
+        if (userId == null) {
+            return null;
+        }
+        FeedInfo feedInfo = new FeedInfo();
+        // 查询是否点赞视频
+        VideoExample videoExample = new VideoExample();
+        videoExample.setOrderByClause("create_time DESC");
+        List<Video> videoList = videoMapper.selectByExample(videoExample);
+        List<VideoResult> videoResults = new ArrayList<>();
+        for (Video video : videoList) {
+            // 查询用户表信息
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andIdEqualTo(video.getAuthorId());
+            List<User> users = userMapper.selectByExample(userExample);
+            User user = users.get(0);
+            UserResult userResult = new UserResult();
+            userResult.setName(user.getName());
+            userResult.setId(user.getId());
+            userResult.setFollowCount(user.getFollowCount());
+            userResult.setFollowerCount(user.getFollowerCount());
+            // 查询视频表信息
+            VideoResult videoResult = new VideoResult();
+            videoResult.setId(video.getId());
+            videoResult.setTitle(video.getTitle());
+            videoResult.setCoverUrl(video.getCoverUrl());
+            videoResult.setPlayUrl(video.getPlayUrl());
+            videoResult.setCommentCount(video.getCommentCount());
+            videoResult.setFavoriteCount(video.getFavoriteCount());
+            // 查询用户视频表信息
+            UserVideoExample example = new UserVideoExample();
+            example.createCriteria().andUserIdEqualTo((Long) userId).andVideoIdEqualTo(video.getAuthorId());
+            List<UserVideo> userVideos = userVideoMapper.selectByExample(example);
+            videoResult.setFavorite(userVideos != null);
+            // 查询用户关注表信息
+            FollowExample followExample = new FollowExample();
+            followExample.createCriteria().andUserIdEqualTo((Long) userId).andFollowIdEqualTo(video.getAuthorId());
+            List<Follow> follows = followMapper.selectByExample(followExample);
+            userResult.setFollow(follows != null);
+            videoResult.setAuthor(userResult);
+            videoResults.add(videoResult);
+        }
+        feedInfo.setVideoList(videoResults);
         return null;
     }
 
     @Override
     public int publishVideo(PublishVideoParam publishVideoParam) {
+        // 解析jwt
+        Object userId = JwtProcessor.parseJwt(publishVideoParam.getToken());
+        if (userId == null) {
+            return 0;
+        }
         try {
             File file = publishVideoParam.getData();
             FileInputStream input = new FileInputStream(file);
@@ -59,8 +122,8 @@ public class VideoServiceImpl implements VideoService {
             MultipartFile mockMultipartFile = new MockMultipartFile(
                     publishVideoParam.getToken() + "-" + publishVideoParam.getTitle() + "-cover.jpg", out.toByteArray());
             MinioUploadDto minioUploadCoverDto = minioService.upload(mockMultipartFile);
-            Video video = new Video(IdUtil.fastSimpleUUID(), publishVideoParam.getTitle(), , new Date(),
-                    minioUploadVideoDto.getUrl(), minioUploadCoverDto.getUrl(), 0, 0);
+            Video video = new Video(IdProcessor.getId(), publishVideoParam.getTitle(), (Long) userId, new Date(),
+                    minioUploadVideoDto.getUrl(), minioUploadCoverDto.getUrl(), 0L, 0L);
             return videoMapper.insert(video);
         } catch (Exception e) {
             LOGGER.info("{}, {} publishVideo ERROR", publishVideoParam.getToken(), publishVideoParam.getTitle());
@@ -70,7 +133,49 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public VideoResult publishedVideoList(UserParam userParam) {
+    public List<VideoResult> publishedVideoList(UserParam userParam) {
+        // 解析jwt
+        Object userId = JwtProcessor.parseJwt(userParam.getToken());
+        if (userId == null) {
+            return null;
+        }
+        // 查询userId的视频
+        List<VideoResult> videoResults = new ArrayList<>();
+        VideoExample videoExample = new VideoExample();
+        videoExample.createCriteria().andAuthorIdEqualTo(Long.valueOf(userParam.getUser_id()));
+        List<Video> videoList = videoMapper.selectByExample(videoExample);
+        // 查询用户表信息
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andIdEqualTo(Long.valueOf(userParam.getUser_id()));
+        List<User> users = userMapper.selectByExample(userExample);
+        User user = users.get(0);
+        for (Video video : videoList) {
+            UserResult userResult = new UserResult();
+            userResult.setName(user.getName());
+            userResult.setId(user.getId());
+            userResult.setFollowCount(user.getFollowCount());
+            userResult.setFollowerCount(user.getFollowerCount());
+            // 查询视频表信息
+            VideoResult videoResult = new VideoResult();
+            videoResult.setId(video.getId());
+            videoResult.setAuthor(userResult);
+            videoResult.setTitle(video.getTitle());
+            videoResult.setCoverUrl(video.getCoverUrl());
+            videoResult.setPlayUrl(video.getPlayUrl());
+            videoResult.setCommentCount(video.getCommentCount());
+            videoResult.setFavoriteCount(video.getFavoriteCount());
+            // 查询用户视频表信息
+            UserVideoExample example = new UserVideoExample();
+            example.createCriteria().andUserIdEqualTo((Long) userId).andVideoIdEqualTo(video.getAuthorId());
+            List<UserVideo> userVideos = userVideoMapper.selectByExample(example);
+            videoResult.setFavorite(userVideos != null);
+            // 查询用户关注表信息
+            FollowExample followExample = new FollowExample();
+            followExample.createCriteria().andUserIdEqualTo((Long) userId).andFollowIdEqualTo(video.getAuthorId());
+            List<Follow> follows = followMapper.selectByExample(followExample);
+            videoResult.setFavorite(follows != null);
+            videoResults.add(videoResult);
+        }
         return null;
     }
 

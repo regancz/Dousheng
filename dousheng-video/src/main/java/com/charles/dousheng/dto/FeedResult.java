@@ -1,9 +1,12 @@
 package com.charles.dousheng.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author charles
@@ -17,17 +20,11 @@ public class FeedResult {
     /**
      * 本次返回的视频中，发布最早的时间，作为下次请求时的latest_time
      */
+    @ApiModelProperty("视频中发布最早的时间")
     private Long nextTime;
-    /**
-     * 状态码，0-成功，其他值-失败
-     */
-    private long statusCode;
-    /**
-     * 返回状态描述
-     */
-    private String statusMsg;
     /**
      * 视频列表
      */
-    private VideoResult[] videoList;
+    @ApiModelProperty("视频列表")
+    private List<VideoResult> videoList;
 }

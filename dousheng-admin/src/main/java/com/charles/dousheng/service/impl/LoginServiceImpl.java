@@ -48,7 +48,8 @@ public class LoginServiceImpl implements LoginService {
         user.setId(IdProcessor.getId());
         user.setName(registerParam.getUsername());
         user.setPassword(DigestUtils.md5DigestAsHex(registerParam.getPassword().getBytes()));
-        userMapper.insert(user);
+        if (userMapper.insert(user) == 0)
+            return null;
         // 生成result
         RegisterResult registerResult = new RegisterResult();
         registerResult.setToken(jwt);
