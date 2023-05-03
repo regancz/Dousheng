@@ -99,12 +99,22 @@ public class FavoriteVideoVideoServiceImpl implements FavoriteVideoService {
         if (userId == null) {
             return 1;
         }
-        //
-        UserVideo userVideo = new UserVideo();
-        userVideo.setVideoId(favoriteActionParam.getVideoid());
-        userVideo.setUserId((Long) userId);
-        userVideo.setId(IdProcessor.getId());
-        userVideo.setState(Objects.equals(favoriteActionParam.getActionType(), "1"));
-        return userVideoMapper.insert(userVideo) - 1;
+        // 根据actionType判断插入还是更新
+        if (Objects.equals(favoriteActionParam.getActionType(), "1")) {
+            UserVideo userVideo = new UserVideo();
+            userVideo.setVideoId(favoriteActionParam.getVideoid());
+            userVideo.setUserId((Long) userId);
+            userVideo.setId(IdProcessor.getId());
+            userVideo.setState(Objects.equals(favoriteActionParam.getActionType(), "1"));
+            return userVideoMapper.insert(userVideo) - 1;
+        } else if (Objects.equals(favoriteActionParam.getActionType(), "0")) {
+            UserVideo userVideo = new UserVideo();
+            userVideo.setVideoId(favoriteActionParam.getVideoid());
+            userVideo.setUserId((Long) userId);
+            userVideo.setId(IdProcessor.getId());
+            userVideo.setState(Objects.equals(favoriteActionParam.getActionType(), "0"));
+            return userVideoMapper.updateByPrimaryKey(userVideo) - 1;
+        }
+        return 1;
     }
 }

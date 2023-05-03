@@ -8,12 +8,15 @@ import com.charles.dousheng.mapper.FollowMapper;
 import com.charles.dousheng.mapper.UserMapper;
 import com.charles.dousheng.model.*;
 import com.charles.dousheng.service.CommentVideoService;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author charles
@@ -78,6 +81,41 @@ public class CommentVideoServiceImpl implements CommentVideoService {
         if (userId == null) {
             return null;
         }
-        return null;
+        if (commentActionParam.getActionType().equals("1")) {
+            Comment comment = new Comment();
+            comment.setContent(commentActionParam.getCommentText());
+            comment.setState(true);
+            comment.setVideoId(commentActionParam.getVideoid());
+            comment.setUserId((Long) userId);
+            commentMapper.insert(comment);
+        } else if (commentActionParam.getActionType().equals("0")) {
+            Comment comment = new Comment();
+            comment.setContent(commentActionParam.getCommentText());
+            comment.setState(false);
+            comment.setVideoId(commentActionParam.getVideoid());
+            comment.setUserId((Long) userId);
+            commentMapper.updateByPrimaryKey(comment);
+        }
+        // 查询用户表信息
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andIdEqualTo((Long) userId);
+        List<User> users = userMapper.selectByExample(userExample);
+        User user = users.get(0);
+        UserResult userResult = new UserResult();
+        userResult.setName(user.getName());
+        userResult.setId(user.getId());
+        userResult.setFollowCount(user.getFollowCount());
+        userResult.setFollowerCount(user.getFollowerCount());
+        userResult.setFollow(false);
+        // 生成Result
+        CommentActionResult commentActionResult = new CommentActionResult();
+        commentActionResult.setUserResult(userResult);
+        commentActionResult.setContent(commentActionParam.getCommentText());
+        Long id = IdProcessor.getId();
+        Date currentDate = new Date();
+        commentActionResult.setId(id);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
+        commentActionResult.setCreateDate(simpleDateFormat.format(currentDate));
+        return commentActionResult;
     }
 }
