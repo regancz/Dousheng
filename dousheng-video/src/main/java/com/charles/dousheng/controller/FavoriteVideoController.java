@@ -2,10 +2,14 @@ package com.charles.dousheng.controller;
 
 import com.charles.dousheng.api.CommonResult;
 import com.charles.dousheng.api.ResultCode;
+import com.charles.dousheng.domain.UserReadHistory;
 import com.charles.dousheng.dto.FavoriteActionParam;
 import com.charles.dousheng.dto.UserParam;
 import com.charles.dousheng.dto.VideoResult;
+import com.charles.dousheng.id.IdProcessor;
+import com.charles.dousheng.repository.UserReadHistoryRepository;
 import com.charles.dousheng.service.FavoriteVideoService;
+import com.charles.dousheng.service.UserReadHistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +32,9 @@ public class FavoriteVideoController {
     @Autowired
     private FavoriteVideoService favoriteVideoService;
 
+    @Autowired
+    private UserReadHistoryService userReadHistoryService;
+
     @ApiOperation("用户的视频发布列表，直接列出用户所有投稿过的视频")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -41,6 +48,7 @@ public class FavoriteVideoController {
     @ResponseBody
     public CommonResult favoriteAction(@RequestBody FavoriteActionParam favoriteActionParam) {
         int action = favoriteVideoService.favoriteAction(favoriteActionParam);
+
         return new CommonResult(action, ResultCode.SUCCESS.getMessage());
     }
 

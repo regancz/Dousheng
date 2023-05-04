@@ -1,6 +1,7 @@
 package com.charles.dousheng.service.impl;
 
 import com.charles.dousheng.crypto.JwtProcessor;
+import com.charles.dousheng.domain.UserReadHistory;
 import com.charles.dousheng.dto.FavoriteActionParam;
 import com.charles.dousheng.dto.UserParam;
 import com.charles.dousheng.dto.UserResult;
@@ -13,6 +14,9 @@ import com.charles.dousheng.mapper.VideoMapper;
 import com.charles.dousheng.model.*;
 import com.charles.dousheng.service.FavoriteVideoService;
 import com.charles.dousheng.service.RedisService;
+import com.charles.dousheng.service.UserReadHistoryService;
+import org.apache.rocketmq.remoting.protocol.RocketMQSerializable;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +44,9 @@ public class FavoriteVideoVideoServiceImpl implements FavoriteVideoService {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private RocketMQTemplate rocketMQTemplate;
 
     @Override
     public List<VideoResult> favoriteList(UserParam userParam) {
