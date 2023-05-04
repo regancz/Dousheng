@@ -121,8 +121,13 @@ public class VideoServiceImpl implements VideoService {
             MultipartFile mockMultipartFile = new MockMultipartFile(
                     publishVideoParam.getToken() + "-" + publishVideoParam.getTitle() + "-cover.jpg", out.toByteArray());
             MinioUploadDto minioUploadCoverDto = minioService.upload(mockMultipartFile);
-            Video video = new Video(IdProcessor.getId(), publishVideoParam.getTitle(), (Long) userId, new Date(),
-                    minioUploadVideoDto.getUrl(), minioUploadCoverDto.getUrl(), 0L, 0L);
+            Video video = new Video();
+            video.setAuthorId((Long) userId);
+            video.setId(IdProcessor.getId());
+            video.setTitle(publishVideoParam.getTitle());
+            video.setCreateTime(new Date());
+            video.setPlayUrl(minioUploadVideoDto.getUrl());
+            video.setCoverUrl(minioUploadCoverDto.getUrl());
             return videoMapper.insert(video);
         } catch (Exception e) {
             LOGGER.info("{}, {} publishVideo ERROR", publishVideoParam.getToken(), publishVideoParam.getTitle());
