@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="dousheng-common" />
+        <module name="dousheng-search" />
         <module name="dousheng-auth" />
         <module name="dousheng-gateway" />
         <module name="dousheng-monitor" />
@@ -24,6 +25,7 @@
       <module name="dousheng-gateway" options="-parameters" />
       <module name="dousheng-mbg" options="-parameters" />
       <module name="dousheng-monitor" options="-parameters" />
+      <module name="dousheng-search" options="-parameters" />
       <module name="dousheng-video" options="-parameters" />
     </option>
   </component>

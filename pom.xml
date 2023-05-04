@@ -17,6 +17,7 @@
         <module>dousheng-admin</module>
         <module>dousheng-mbg</module>
         <module>dousheng-monitor</module>
+        <module>dousheng-search</module>
     </modules>
 
     <parent>
