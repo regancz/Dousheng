@@ -7,6 +7,7 @@ import com.charles.dousheng.mbg.mapper.UserMapper;
 import com.charles.dousheng.mbg.mapper.UserVideoMapper;
 import com.charles.dousheng.mbg.mapper.VideoMapper;
 import com.charles.dousheng.mbg.model.*;
+import com.charles.dousheng.video.component.UpdateFeedSender;
 import com.charles.dousheng.video.component.UserReadHistorySender;
 import com.charles.dousheng.video.dto.*;
 import com.charles.dousheng.video.service.MinioService;
@@ -55,6 +56,9 @@ public class VideoServiceImpl implements VideoService {
     @Autowired
     private UserReadHistorySender userReadHistorySender;
 
+    @Autowired
+    private UpdateFeedSender updateFeedSender;
+
     @Override
     public FeedInfo feed(FeedParam feedParam) {
         // 解析jwt
@@ -101,7 +105,10 @@ public class VideoServiceImpl implements VideoService {
             videoResults.add(videoResult);
         }
         feedInfo.setVideoList(videoResults);
-        userReadHistorySender.asyncSendMessage(userId, videoResults);
+        UserReadHistoryDto userReadHistoryDto = new UserReadHistoryDto();
+        userReadHistoryDto.setUserId((Long) userId);
+        userReadHistoryDto.setVideoResultList(videoResults);
+        userReadHistorySender.asyncSendMessage("dousheng-video-read-history", userReadHistoryDto);
         return null;
     }
 
@@ -133,6 +140,15 @@ public class VideoServiceImpl implements VideoService {
             video.setCreateTime(new Date());
             video.setPlayUrl(minioUploadVideoDto.getUrl());
             video.setCoverUrl(minioUploadCoverDto.getUrl());
+            // 查询用户表
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andIdEqualTo((Long) userId);
+            List<User> users = userMapper.selectByExample(userExample);
+            User user = users.get(0);
+            // 查看是否是大V，更新推荐列表
+            if (user.getFollowerCount() > 10) {
+                updateFeedSender.asyncSendMessage("dousheng-video-feed", (Long) userId);
+            }
             return videoMapper.insert(video);
         } catch (Exception e) {
             LOGGER.info("{}, {} publishVideo ERROR", publishVideoParam.getToken(), publishVideoParam.getTitle());
