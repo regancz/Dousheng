@@ -50,11 +50,12 @@ management: #开启SpringBoot Admin的监控
     health:
       show-details: always
 redis:
-  database: mall
+  database: dousheng
   key:
-    admin: 'ums:admin'
+    read:
+      history: 'video:read:history'
   expire:
-    common: 86400 # 24小时
+    common: 86400 * 30 # 一个月
 aliyun:
   oss:
     endpoint: oss-cn-shenzhen.aliyuncs.com # oss对外服务的访问域名

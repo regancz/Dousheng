@@ -1,4 +1,4 @@
-package com.charles.dousheng.video.gateway.config;
+package com.charles.dousheng.video.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan({"com.charles.dousheng.mbg.mapper","com.charles.dousheng.dao"})
+@MapperScan({"com.charles.dousheng.mapper","com.charles.dousheng.video.dao"})
 public class MyBatisConfig {
 }

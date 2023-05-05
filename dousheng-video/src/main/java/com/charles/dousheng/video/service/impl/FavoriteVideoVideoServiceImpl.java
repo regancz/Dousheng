@@ -1,6 +1,7 @@
 package com.charles.dousheng.video.service.impl;
 
 import com.charles.dousheng.common.crypto.JwtProcessor;
+import com.charles.dousheng.mbg.model.*;
 import com.charles.dousheng.video.dto.FavoriteActionParam;
 import com.charles.dousheng.video.dto.UserParam;
 import com.charles.dousheng.video.dto.UserResult;

@@ -1,4 +1,4 @@
-package com.charles.dousheng.video.gateway.config;
+package com.charles.dousheng.video.config;
 
 import com.charles.dousheng.common.config.BaseSwaggerConfig;
 import com.charles.dousheng.common.domain.SwaggerProperties;
@@ -18,10 +18,10 @@ public class SwaggerConfig extends BaseSwaggerConfig {
     @Override
     public SwaggerProperties swaggerProperties() {
         return SwaggerProperties.builder()
-                .apiBasePackage("com.macro.mall.portal.controller")
-                .title("mall前台系统")
-                .description("mall前台相关接口文档")
-                .contactName("macro")
+                .apiBasePackage("com.charles.dousheng.video.controller")
+                .title("dousheng视频系统")
+                .description("dousheng视频相关接口文档")
+                .contactName("charles")
                 .version("1.0")
                 .enableSecurity(true)
                 .build();

@@ -7,6 +7,7 @@ import com.charles.dousheng.mbg.mapper.UserMapper;
 import com.charles.dousheng.mbg.mapper.UserVideoMapper;
 import com.charles.dousheng.mbg.mapper.VideoMapper;
 import com.charles.dousheng.mbg.model.*;
+import com.charles.dousheng.video.component.UserReadHistorySender;
 import com.charles.dousheng.video.dto.*;
 import com.charles.dousheng.video.service.MinioService;
 import com.charles.dousheng.video.service.VideoService;
@@ -50,6 +51,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Autowired
     private MinioService minioService;
+
+    @Autowired
+    private UserReadHistorySender userReadHistorySender;
 
     @Override
     public FeedInfo feed(FeedParam feedParam) {
@@ -97,6 +101,7 @@ public class VideoServiceImpl implements VideoService {
             videoResults.add(videoResult);
         }
         feedInfo.setVideoList(videoResults);
+        userReadHistorySender.asyncSendMessage(userId, videoResults);
         return null;
     }
 
