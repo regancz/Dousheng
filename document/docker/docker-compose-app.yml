@@ -1,0 +1,70 @@
+version: '3'
+services:
+  dousheng-admin:
+    image: dousheng/dousheng-admin:1.0-SNAPSHOT
+    container_name: dousheng-admin
+    ports:
+      - 8080:8080
+    volumes:
+      - /mydata/app/dousheng-admin/logs:/var/logs
+      - /etc/localtime:/etc/localtime
+    environment:
+      - 'TZ="Asia/Shanghai"'
+    external_links:
+      - mysql:db #可以用db这个域名访问mysql服务
+      - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
+  dousheng-search:
+    image: dousheng/dousheng-search:1.0-SNAPSHOT
+    container_name: dousheng-search
+    ports:
+      - 8081:8081
+    volumes:
+      - /mydata/app/dousheng-search/logs:/var/logs
+      - /etc/localtime:/etc/localtime
+    environment:
+      - 'TZ="Asia/Shanghai"'
+    external_links:
+      - elasticsearch:es #可以用es这个域名访问elasticsearch服务
+      - mysql:db #可以用db这个域名访问mysql服务
+      - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
+  dousheng-video:
+    image: dousheng/dousheng-video:1.0-SNAPSHOT
+    container_name: dousheng-video
+    ports:
+      - 8085:8085
+    volumes:
+      - /mydata/app/dousheng-video/logs:/var/logs
+      - /etc/localtime:/etc/localtime
+    environment:
+      - 'TZ="Asia/Shanghai"'
+    external_links:
+      - redis:redis #可以用redis这个域名访问redis服务
+      - mongo:mongo #可以用mongo这个域名访问mongo服务
+      - mysql:db #可以用db这个域名访问mysql服务
+#      - rabbitmq:rabbit #可以用rabbit这个域名访问rabbitmq服务
+      - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
+  dousheng-gateway:
+    image: dousheng/dousheng-gateway:1.0-SNAPSHOT
+    container_name: dousheng-gateway
+    ports:
+      - 8201:8201
+    volumes:
+      - /mydata/app/dousheng-gateway/logs:/var/logs
+      - /etc/localtime:/etc/localtime
+    environment:
+      - 'TZ="Asia/Shanghai"'
+    external_links:
+      - redis:redis #可以用redis这个域名访问redis服务
+      - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
+  dousheng-monitor:
+    image: dousheng/dousheng-monitor:1.0-SNAPSHOT
+    container_name: dousheng-monitor
+    ports:
+      - 8101:8101
+    volumes:
+      - /mydata/app/dousheng-monitor/logs:/var/logs
+      - /etc/localtime:/etc/localtime
+    environment:
+      - 'TZ="Asia/Shanghai"'
+    external_links:
+      - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务

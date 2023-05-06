@@ -14,5 +14,4 @@ public class DoushengVideoApplication {
     public static void main(String[] args) {
         SpringApplication.run(DoushengVideoApplication.class, args);
     }
-
 }
