@@ -77,3 +77,15 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: basic
+xxl:
+  admin:
+    addresses: http://127.0.0.1:8080/xxl-job-admin
+  accessToken: default_token
+  job:
+    executor:
+      appName: xxl-job-executor-sample
+      address:
+      ip:
+      port:
+      logPath: /data/applogs/xxl-job/jobhandler
+      logRetentionDays: 30

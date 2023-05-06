@@ -56,6 +56,7 @@
         <nimbus-jose-jwt.version>9.23</nimbus-jose-jwt.version>
         <dousheng-common.version>1.0-SNAPSHOT</dousheng-common.version>
         <dousheng-mbg.version>1.0-SNAPSHOT</dousheng-mbg.version>
+        <xxl-job.version>2.3.1</xxl-job.version>
     </properties>
 
     <dependencies>
@@ -211,6 +212,12 @@
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.xuxueli/xxl-job-core -->
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxl-job.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
