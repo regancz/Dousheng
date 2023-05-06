@@ -7,10 +7,7 @@ import com.charles.dousheng.video.service.RecommendVideoService;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author charles
@@ -42,7 +39,7 @@ public class RecommendVideoServiceImpl implements RecommendVideoService {
     public void updateRecommendVideo(Long userId) {
         // 选择近两小时的视频中进行推荐
         VideoExample videoExample = new VideoExample();
-        videoExample.createCriteria().andCreateTimeLessThanOrEqualTo();
+        videoExample.createCriteria().andCreateTimeLessThanOrEqualTo(new Date());
         List<Video> videos = videoMapper.selectByExample(videoExample);
         // 计算每个视频的特征向量
         double[][] features = new double[videos.size()][2];

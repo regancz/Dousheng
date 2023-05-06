@@ -13,9 +13,9 @@ public interface EsVideoRepository extends ElasticsearchRepository<EsVideo, Long
     /**
      * 搜索查询
      *
-     * @param name              视频名称
+     * @param videoCategoryName 视频名称
      * @param subTitle          视频标题
      * @param page              分页信息
      */
-    Page<EsVideo> findByNameOrTitle(String name, String subTitle, Pageable page);
+    Page<EsVideo> findByVideoCategoryNameOrTitle(String videoCategoryName, String subTitle, Pageable page);
 }

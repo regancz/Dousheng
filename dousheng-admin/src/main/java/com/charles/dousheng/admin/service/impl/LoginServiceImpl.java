@@ -16,6 +16,7 @@ import com.charles.dousheng.mbg.model.User;
 import com.charles.dousheng.mbg.model.UserExample;
 import com.charles.dousheng.admin.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
@@ -25,6 +26,7 @@ import java.util.List;
  * @author charles
  * @date 5/1/2023 10:03 PM
  */
+@Service
 public class LoginServiceImpl implements LoginService {
     @Autowired
     private UserMapper userMapper;

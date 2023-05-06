@@ -28,11 +28,6 @@ spring:
       host: localhost
       port: 27017
       database: dousheng-port
-#  rabbitmq: #rabbitmq相关配置
-#    host: localhost
-#    port: 5672
-#    username: guest
-#    password: guest
   servlet:
     multipart:
       enabled: true #开启文件上传

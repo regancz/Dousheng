@@ -102,7 +102,7 @@ public class EsVideoServiceImpl implements EsVideoService {
     @Override
     public Page<EsVideo> search(String keyword, Integer pageNum, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return videoRepository.findByNameOrTitle(keyword, keyword, pageable);
+        return videoRepository.findByVideoCategoryNameOrTitle(keyword, keyword, pageable);
     }
 
     @Override

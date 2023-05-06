@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.charles.dousheng.search.dao.EsVideoDao">
+    <resultMap id="esVideoListMap" type="com.charles.dousheng.search.domain.EsVideo" autoMapping="true">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <collection property="attrValueList" columnPrefix="attr_" ofType="com.charles.dousheng.search.domain.EsVideoAttributeValue">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="video_attribute_id" property="videoAttributeId" jdbcType="BIGINT"/>
+            <result column="value" property="value" jdbcType="VARCHAR"/>
+            <result column="type" property="type"/>
+            <result column="name" property="name"/>
+        </collection>
+    </resultMap>
+    <select id="getAllEsVideoList" resultMap="esVideoListMap">
+        select
+            v.id id,
+            v.MCN_id brandId,
+            v.MCN_name brandName,
+            v.video_category_id videoCategoryId,
+            v.video_category_name videoCategoryName,
+            v.play_url playUrl,
+            v.cover_url coverUrl,
+            v.title title,
+            v.create_time createTime,
+            v.favorite_count favoriteCount,
+            v.comment_count commentCount,
+            vav.id attr_id,
+            vav.value attr_value,
+            vav.video_attribute_id attr_video_attribute_id,
+            va.type attr_type,
+            va.name attr_name
+        from video v
+        left join video_attribute_value vav on v.id = vav.video_id
+        left join video_attribute va on vav.video_attribute_id = va.id
+        <if test="id!=null">
+            and v.id=#{id}
+        </if>
+    </select>
+</mapper>
