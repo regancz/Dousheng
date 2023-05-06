@@ -6,7 +6,7 @@
 
 ## Features
 
-- 采用微服务架构，Nacos和Dubbo，分为gateway，monitor，用户和视频模块，支持Docker，k8s部署
+- 采用微服务架构，Nacos和Feign，分为gateway，monitor，用户和视频模块，支持Docker，k8s部署
 - RocketMQ异步生成点赞和评论消息，作为数据源给Feed进行推荐，MinIO存储视频和封面
 - XXL-JOB定时推荐视频到Redis和根据视频信息定时生成统计信息，大博主发布视频主动更新推荐列表
 - ES实现关键字搜索视频名称、副标题和关键词，支持博主和视频类型的筛选，多种方式排序
