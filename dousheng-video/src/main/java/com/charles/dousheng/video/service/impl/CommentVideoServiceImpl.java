@@ -48,8 +48,7 @@ public class CommentVideoServiceImpl implements CommentVideoService {
             CommentActionResult commentActionResult = new CommentActionResult();
             commentActionResult.setId(IdProcessor.getId());
             commentActionResult.setContent(comment.getContent());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
-            commentActionResult.setCreateDate(simpleDateFormat.format(comment.getCreateTime()));
+            commentActionResult.setCreateDate(comment.getCreateTime());
             // 查询用户表信息
             UserExample userExample = new UserExample();
             userExample.createCriteria().andIdEqualTo(comment.getUserId());
@@ -112,8 +111,7 @@ public class CommentVideoServiceImpl implements CommentVideoService {
         Long id = IdProcessor.getId();
         Date currentDate = new Date();
         commentActionResult.setId(id);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
-        commentActionResult.setCreateDate(simpleDateFormat.format(currentDate));
+        commentActionResult.setCreateDate(currentDate);
         return commentActionResult;
     }
 }

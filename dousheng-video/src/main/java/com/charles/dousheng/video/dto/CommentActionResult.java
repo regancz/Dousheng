@@ -1,7 +1,10 @@
 package com.charles.dousheng.video.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * @author charles
@@ -15,9 +18,10 @@ public class CommentActionResult {
      */
     private String content;
     /**
-     * 评论发布日期，格式 mm-dd
+     * 评论发布日期，格式 MM-dd
      */
-    private String createDate;
+    @JsonFormat(pattern = "MM-dd")
+    private Date createDate;
     /**
      * 评论id
      */

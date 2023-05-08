@@ -3,10 +3,7 @@
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/dousheng-admin/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dousheng-admin/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/dousheng-auth/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/dousheng-auth/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dousheng-common/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/dousheng-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dousheng-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dousheng-gateway/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dousheng-mbg/src/main/java" charset="UTF-8" />
@@ -14,7 +11,5 @@
     <file url="file://$PROJECT_DIR$/dousheng-search/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dousheng-video/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dousheng-video/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
 </project>
