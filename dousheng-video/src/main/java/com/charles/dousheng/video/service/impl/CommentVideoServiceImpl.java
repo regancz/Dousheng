@@ -10,6 +10,7 @@ import com.charles.dousheng.video.dto.*;
 import com.charles.dousheng.video.service.CommentVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,6 +73,7 @@ public class CommentVideoServiceImpl implements CommentVideoService {
     }
 
     @Override
+    @Transactional
     public CommentActionResult commentAction(CommentActionParam commentActionParam) {
         // 解析jwt
         Object userId = JwtProcessor.parseJwt(commentActionParam.getToken());
