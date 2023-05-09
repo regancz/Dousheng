@@ -2,6 +2,7 @@ package com.charles.dousheng.video.controller;
 
 import com.charles.dousheng.common.api.CommonResult;
 import com.charles.dousheng.common.api.ResultCode;
+import com.charles.dousheng.common.lock.LocalLock;
 import com.charles.dousheng.video.dto.RelationFollowListParam;
 import com.charles.dousheng.video.service.RelationUserService;
 import com.charles.dousheng.video.dto.RelationActionParam;
@@ -46,6 +47,7 @@ public class RelationUserController {
     }
 
     @ApiOperation("登录用户对视频的点赞和取消点赞操作")
+    @LocalLock
     @RequestMapping(value = "/action", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult relationAction(@RequestBody RelationActionParam relationActionParam) {

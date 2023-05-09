@@ -2,6 +2,7 @@ package com.charles.dousheng.video.controller;
 
 import com.charles.dousheng.common.api.CommonResult;
 import com.charles.dousheng.common.api.ResultCode;
+import com.charles.dousheng.common.lock.LocalLock;
 import com.charles.dousheng.video.dto.FavoriteActionParam;
 import com.charles.dousheng.video.dto.UserParam;
 import com.charles.dousheng.video.dto.VideoResult;
@@ -32,6 +33,7 @@ public class FavoriteVideoController {
     @Autowired
     private UserReadHistoryService userReadHistoryService;
 
+    @LocalLock
     @ApiOperation("用户的视频发布列表，直接列出用户所有投稿过的视频")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -40,6 +42,7 @@ public class FavoriteVideoController {
         return CommonResult.success(videoResults);
     }
 
+    @LocalLock
     @ApiOperation("登录用户对视频的点赞和取消点赞操作")
     @RequestMapping(value = "/action", method = RequestMethod.POST)
     @ResponseBody

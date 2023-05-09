@@ -1,6 +1,7 @@
 package com.charles.dousheng.video.controller;
 
 import com.charles.dousheng.common.api.CommonResult;
+import com.charles.dousheng.common.lock.LocalLock;
 import com.charles.dousheng.video.service.VideoService;
 import com.charles.dousheng.video.dto.*;
 import io.swagger.annotations.Api;
@@ -37,6 +38,7 @@ public class VideoController {
 
     @ApiOperation("登录用户选择视频上传")
     @RequestMapping(value = "/publish/action", method = RequestMethod.POST)
+    @LocalLock
     @ResponseBody
     public CommonResult publishVideo(PublishVideoParam publishVideoParam) {
         int count = 0;

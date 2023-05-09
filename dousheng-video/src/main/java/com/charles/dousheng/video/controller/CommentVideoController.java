@@ -1,6 +1,7 @@
 package com.charles.dousheng.video.controller;
 
 import com.charles.dousheng.common.api.CommonResult;
+import com.charles.dousheng.common.lock.LocalLock;
 import com.charles.dousheng.video.dto.CommentActionParam;
 import com.charles.dousheng.video.dto.CommentActionResult;
 import com.charles.dousheng.video.dto.CommentListParam;
@@ -35,6 +36,7 @@ public class CommentVideoController {
     }
 
     @ApiOperation("登录用户对视频进行评论")
+    @LocalLock
     @RequestMapping(value = "/action", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<CommentActionResult> commentAction(@RequestBody CommentActionParam commentActionParam) {
