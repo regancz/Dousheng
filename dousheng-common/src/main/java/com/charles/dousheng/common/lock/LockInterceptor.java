@@ -58,8 +58,19 @@ public class LockInterceptor {
     }
 
     private String getKey(String key, Object[] args) {
-        // parse args according to xxx
-        //for ()
-        return "";
+        // show the example
+//        for (int i = 0; i < args.length; i++) {
+//            if (args[i] instanceof Page) {
+//                Page page = (Page) args[0];
+//                if (StringUtils.isEmpty(page.getCompanyId())) {
+//                    key = key.replace("arg[" + i + "]", page.getCompanyId);
+//                } else {
+//                    key = key.replace("arg[" + i + "]", args[i].toString());
+//                }
+//            } else {
+//                key = key.replace("arg[" + i + "]", args[i].toString());
+//            }
+//        }
+        return key;
     }
 }

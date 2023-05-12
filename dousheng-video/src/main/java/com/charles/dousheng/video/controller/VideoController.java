@@ -38,6 +38,7 @@ public class VideoController {
 
     @ApiOperation("登录用户选择视频上传")
     @RequestMapping(value = "/publish/action", method = RequestMethod.POST)
+//    @LocalLock(key = "back:store:apporve:arg[0]")
     @LocalLock
     @ResponseBody
     public CommonResult publishVideo(PublishVideoParam publishVideoParam) {
